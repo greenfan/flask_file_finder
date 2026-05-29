@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Archives</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; background: #0f172a; color: #e2e8f0; }
+    a { color: #93c5fd; }
+    .card { background: #111827; border: 1px solid #334155; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+    input, button, select { padding: 0.55rem 0.7rem; border-radius: 8px; border: 1px solid #475569; background: #0b1220; color: #e2e8f0; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border-bottom: 1px solid #334155; padding: 0.5rem; text-align: left; vertical-align: top; }
+    .muted { color: #94a3b8; }
+    .row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+  </style>
+</head>
+<body>
+  <h1>Archives</h1>
+  <p><a href="/">Back</a></p>
+  <div class="card">
+    <form method="get" class="row">
+      <input name="q" placeholder="search path" value="{{ q }}">
+      <select name="sort">
+        <option value="mtime" {% if sort == 'mtime' %}selected{% endif %}>mtime</option>
+        <option value="size" {% if sort == 'size' %}selected{% endif %}>size</option>
+        <option value="path" {% if sort == 'path' %}selected{% endif %}>path</option>
+        <option value="type" {% if sort == 'type' %}selected{% endif %}>type</option>
+      </select>
+      <button type="submit">Filter</button>
+    </form>
+  </div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr><th>Path</th><th>Type</th><th>Mime</th><th>Size</th><th>Modified</th><th>Detected by</th><th>Root</th></tr>
+      </thead>
+      <tbody>
+      {% for row in rows %}
+        <tr>
+          <td>{{ row['path'] }}</td>
+          <td>{{ row['type'] }}</td>
+          <td>{{ row['mime'] }}</td>
+          <td>{{ row['size'] }}</td>
+          <td>{{ _human_ts(row['mtime']) }}</td>
+          <td>{{ row['detected_by'] }}</td>
+          <td>{{ row['root'] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
